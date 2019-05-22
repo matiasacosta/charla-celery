@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.7
+    ports:
+      - "5672:5672"  # Bindiamos el puerto dado que es útil para depurar.
+      - "15672:15672"  # Este puerto nos permite entrar al panel de monitorización
+  celery:
+    build: .
+    command: bash -c "celery -A tasks worker --loglevel=info"
+    volumes:
+      - .:/code
+    links:
+      - rabbit
+    environment:
+      - RABBIT_HOST=rabbit
+    depends_on:
+      - rabbit
