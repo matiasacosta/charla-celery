@@ -1,23 +1,10 @@
 # Django 
 from django.shortcuts import render,HttpResponse, HttpResponseRedirect
-from django.conf import settings
 from django.http import JsonResponse
 
 # Celery
-from celery import task, current_task
 from celery.result import AsyncResult
-from time import sleep
-
-@task()
-def incrementar_uno(): #TODO Buscar un nombre mejor
-    max_values = 20
-
-    for i in range(0,max_values):
-        porcentaje = i*100/(max_values)
-        formato_porcentaje = format(porcentaje, '.2f')
-        sleep(0.1)
-        current_task.update_state(state='PROGRESS' ,meta={'current':formato_porcentaje})
-
+from .tasks import incrementar_uno
 
 def get_job_state(request):
     """

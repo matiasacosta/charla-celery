@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 
 # Celery config
 
-CELERY_RESULT_BACKEND = 'amqp'
+CELERY_RESULT_BACKEND = 'rpc'
 BROKER_URL = f"amqp://guest:guest@{os.getenv('RABBIT_HOST', 'localhost')}//"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

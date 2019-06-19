@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import os
 
 """
@@ -11,11 +10,11 @@ from django.conf import settings
 from celery import Celery
 
 app = Celery('ejemplo_celery',
-             backend='amqp',
-             broker=f"amqp://guest:guest@{os.getenv('RABBIT_HOST', 'localhost')}//")
+             backend='rpc://',
+             broker=f"amqp://{os.getenv('RABBITMQ_DEFAULT_USER', 'guest')}:{os.getenv('RABBITMQ_DEFAULT_PASS', 'guest')}@{os.getenv('RABBIT_HOST', 'localhost')}//")
 
-# This reads, e.g., CELERY_ACCEPT_CONTENT = ['json'] from settings.py:
+# Lectura de la configuración de celery en el settings.py e.j.CELERY_ACCEPT_CONTENT = ['json']:
 app.config_from_object('django.conf:settings')
 
-# For autodiscover_tasks to work, you must define your tasks in a file called 'tasks.py'.
+# Permite descubrir las tareas en los modulos del proyecto, las tareas se buscaran en los archivos tasks.py.
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

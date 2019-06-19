@@ -7,6 +7,9 @@ services:
     ports:
       - "5672:5672"  # Bindiamos el puerto dado que es útil para depurar.
       - "15672:15672"  # Este puerto nos permite entrar al panel de monitorización
+    environment:
+      - RABBITMQ_DEFAULT_USER = conejo
+      - RABBITMQ_DEFAULT_PASS = conejosecreto
   worker:
     build: .
     command: bash -c "sleep 10 && celery -A ejemplo_celery worker --loglevel=info"
@@ -16,6 +19,8 @@ services:
       - rabbit
     environment:
       - RABBIT_HOST=rabbit
+      - RABBITMQ_DEFAULT_USER = conejo
+      - RABBITMQ_DEFAULT_PASS = conejosecreto
     depends_on:
       - rabbit
   web:
@@ -27,6 +32,8 @@ services:
       - "8000:8000"
     environment:
       - RABBIT_HOST=rabbit
+      - RABBITMQ_DEFAULT_USER = conejo
+      - RABBITMQ_DEFAULT_PASS = conejosecreto
     depends_on:
       - rabbit
       - worker
