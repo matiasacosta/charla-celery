@@ -7,9 +7,9 @@ services:
     ports:
       - "5672:5672"  # Bindiamos el puerto dado que es útil para depurar.
       - "15672:15672"  # Este puerto nos permite entrar al panel de monitorización
-  celery:
+  worker:
     build: .
-    command: bash -c "celery -A tasks worker --loglevel=info"
+    command: bash -c "sleep 10 && celery -A ejemplo_celery worker --loglevel=info"
     volumes:
       - .:/code
     links:
@@ -18,3 +18,15 @@ services:
       - RABBIT_HOST=rabbit
     depends_on:
       - rabbit
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - RABBIT_HOST=rabbit
+    depends_on:
+      - rabbit
+      - worker

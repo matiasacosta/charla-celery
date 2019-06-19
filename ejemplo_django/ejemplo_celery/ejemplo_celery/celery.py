@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ejemplo_celery.settings')
 from django.conf import settings
 from celery import Celery
 
-app = Celery('sueldos_ganancias',
+app = Celery('ejemplo_celery',
              backend='amqp',
              broker=f"amqp://guest:guest@{os.getenv('RABBIT_HOST', 'localhost')}//")
 
