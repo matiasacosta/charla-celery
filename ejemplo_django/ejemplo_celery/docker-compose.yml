@@ -1,6 +1,9 @@
 version: '3'
 
 services:
+  redis:
+    hostname: redis
+    image: redis:latest
   rabbit:
     hostname: rabbit
     image: rabbitmq:management
@@ -16,8 +19,10 @@ services:
       - rabbit
     environment:
       - RABBIT_HOST=rabbit
+      - REDIS_HOST=redis
     depends_on:
       - rabbit
+      - redis
   web:
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -27,6 +32,8 @@ services:
       - "8000:8000"
     environment:
       - RABBIT_HOST=rabbit
+      - REDIS_HOST=redis
     depends_on:
       - rabbit
       - worker
+      - redis
