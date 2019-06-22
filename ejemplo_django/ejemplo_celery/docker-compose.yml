@@ -18,6 +18,13 @@ services:
       - RABBIT_HOST=rabbit
     depends_on:
       - rabbit
+  flower:  
+    image: mher/flower
+    command: ["flower", "--broker=amqp://guest:guest@rabbit//", "--port=8888"]  
+    ports:  
+      - 8888:8888  
+    depends_on:
+      - worker
   web:
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
