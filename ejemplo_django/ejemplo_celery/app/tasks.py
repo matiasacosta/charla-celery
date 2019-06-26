@@ -2,7 +2,7 @@ from celery import task, current_task
 from time import sleep
 
 @task()
-def incrementar_uno(): #TODO Buscar un nombre mejor
+def incrementar_uno():
     max_values = 20
 
     for i in range(0,max_values):
