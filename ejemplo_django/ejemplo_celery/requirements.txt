@@ -2,7 +2,7 @@ amqp==2.5.0
 Babel==2.7.0
 billiard==3.6.0.0
 celery==4.3.0
-Django==2.2.2
+Django==2.2.18
 flower==0.9.3
 kombu==4.6.3
 pytz==2019.1
